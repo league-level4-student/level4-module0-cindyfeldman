@@ -15,6 +15,9 @@ public class CrazyDigitalPainting {
 		
 		//4. Iterate through the 2D array and initialize each Color object
 		//   to a new color. The sample image was created using the following 
+
+		
+		
 		//   pattern:
 		//   colors[i][j] = new Color(i % 256, (i * j) % 256, j % 256);
 		
