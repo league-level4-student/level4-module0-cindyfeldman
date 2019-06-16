@@ -22,10 +22,13 @@ public class MazeMaker{
 		maze = new Maze(width, height);
 		
 		//4. select a random cell to start
-		
+		int randX = randGen.nextInt(width);
+		int randY = randGen.nextInt(height);
+		Cell ranCell = maze.getCell(randX, randY);
+	
 		
 		//5. call selectNextPath method with the randomly selected cell
-		
+		selectNextPath(ranCell);
 		
 		return maze;
 	}
@@ -33,23 +36,34 @@ public class MazeMaker{
 	//6. Complete the selectNextPathMethod
 	private static void selectNextPath(Cell currentCell) {
 		//A. mark cell as visited
-
+		currentCell.setBeenVisited(true);
 		//B. check for unvisited neighbors using the cell
-		
+		ArrayList<Cell> neighbors = getUnvisitedNeighbors(currentCell);
+		Random r = new Random();
 		//C. if has unvisited neighbors,
-		
+	if(neighbors.isEmpty()!=true) {
+		for (int i = 0; i < neighbors.size(); i++) {
 			//C1. select one at random.
-			
+			Cell n = 	neighbors.get(r.nextInt());
 			//C2. push it to the stack
-		
+			uncheckedCells.push(n);
 			//C3. remove the wall between the two cells
-
+				removeWalls(currentCell,n);
 			//C4. make the new cell the current cell and mark it as visited
-		
+			n = currentCell;
+			n.setBeenVisited(true);
 			//C5. call the selectNextPath method with the current cell
-			
-			
+			selectNextPath(currentCell);
+		}
 		//D. if all neighbors are visited
+		if(neighbors.isEmpty()==true) {
+			if(uncheckedCells.isEmpty()!=true) {
+				Cell poppedCell = uncheckedCells.pop();
+				poppedCell =currentCell;
+				selectNextPath(currentCell);
+			}
+		}
+	}
 		
 			//D1. if the stack is not empty
 			

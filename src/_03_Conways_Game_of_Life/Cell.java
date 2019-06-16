@@ -28,27 +28,25 @@ public class Cell implements Drawable{
 	 * (source: Wikipedia)
 	 * */
 	public void liveOrDie(int numNeighbors) {
-		if(isAlive==true) {
-			if(cellSize==3) {
-				System.out.println("Spawned");
+		if(isAlive == false) {
+			if(numNeighbors == 3) {
+				System.out.println("SPAWN");
 				isAlive = true;
+				
+			}
+		}else if(isAlive = true) {
+			if(numNeighbors < 2) {
+				System.out.println("underpop");
+				isAlive = false;
+			}else if(numNeighbors == 2 || numNeighbors == 3) {
+				System.out.println("sustained");
+				isAlive = true;
+			}else if(numNeighbors > 3) {
+				System.out.println("overpop");
+				isAlive = false;
 			}
 		}
-		 if(isAlive==false) {
-			 if(cellSize<2) {
-				 System.out.println("underpop");
-				 isAlive = false;
-			 }
-			 else if(cellSize==2 || cellSize==3) {
-				 System.out.println("spawned");
-				 isAlive = true;
-			 }
-			 else if(cellSize>3) {
-				 System.out.println("over pop");
-				 isAlive = false;
-			 }
-			 
-		 }
+	
 	}
 	
 	public int getX() {
@@ -64,13 +62,13 @@ public class Cell implements Drawable{
 	//    draws empty square if cell is dead
 	@Override
 	public void draw(Graphics g) {
-		if(isAlive== true) {
-			g.setColor(Color.blue);
-			g.drawRect(x,y,cellSize,cellSize);
-		}
-		else if(isAlive == false) {
-			g.setColor(Color.gray);
-			g.drawRect(x,y,cellSize,cellSize);
+		if(isAlive == true) {
+			g.setColor(Color.BLUE);
+			g.fillRect(x, y, cellSize, cellSize);
+		}else{
+			g.clearRect(x, y, cellSize, cellSize);
+			g.setColor(Color.black);
+			g.drawRect(x, y, cellSize, cellSize);
 		}
 		
 		
