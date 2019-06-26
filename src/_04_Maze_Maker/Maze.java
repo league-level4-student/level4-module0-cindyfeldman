@@ -17,7 +17,7 @@ cells = new Cell[width][height];
 		//   using i and j as the location
 for (int i = 0; i < cells.length; i++) {
 	for (int j = 0; j < cells[i].length; j++) {
-		cells = new Cell[i][j];
+		cells[i][j]= new Cell(i,j);
 	}
 }
 		
@@ -34,17 +34,10 @@ for (int i = 0; i < cells.length; i++) {
 	
 	//4b. This method returns the selected cell.
 	public Cell getCell(int x, int y){
-		int xs =0;
-		int ys=0;
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[i].length; j++) {
-				 xs = cells[i][j].getX();
-				 ys = cells[i][j].getY();
-			}
-		}
+		
 	
 	
-		return  cells[xs][ys];
+		return  cells[x][y];
 	}
 
 	public int getWidth() {
