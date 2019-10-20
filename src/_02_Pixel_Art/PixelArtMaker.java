@@ -5,7 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,30 +22,43 @@ public class PixelArtMaker implements MouseListener, ActionListener{
 	private GridPanel gp;
 	ColorSelectionPanel csp;
 	JButton save;
-	private static final String DATA_FILE = "src/_00_/saved.dat";
+	private static final String DATA_FILE = "src/_02_Pixel_Art/saved.dat";
+	private static final String Second_File = "src/_02_Pixel_Art/secondSave.dat";
 
 	
 	public void start() {
-		gip = new GridInputPanel(this);	
-		window = new JFrame("Pixel Art");
-		window.setLayout(new FlowLayout());
-		
-		window.setResizable(false);
+	gp = load();
+	window = new JFrame("Pixel Art");
+	window.setLayout(new FlowLayout());
 	
-		window.add(gip);
+	window.setResizable(false);
+		if(gp==null) {
+		
+	
+		gip = new GridInputPanel(this);	
+		
+	
+		window.add(gip);}
+		else {
+			dataStuff();
+		}
 		window.pack();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
-		
+
 	
 	}
 
 	public void submitGridData(int w, int h, int r, int c) {
 		gp = new GridPanel(w, h, r, c);
-		csp = new ColorSelectionPanel();
 		
+	
 		window.remove(gip);
+		dataStuff();
+		}
+	public void dataStuff() {	
 		window.add(gp);
+		csp = new ColorSelectionPanel();
 		window.add(csp);
 		save = new JButton();
 		save.setText("Save");
@@ -82,10 +101,51 @@ public class PixelArtMaker implements MouseListener, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JButton press = (JButton)e.getSource();
+
 		if(press==save) {
-			try {
-				FileOutputStream filestream = new FileOutputStream(new File())
+			try (FileOutputStream fos = new FileOutputStream(new File(DATA_FILE)) ;
+					
+				ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+				oos.writeObject(gp);
+			
 			}
+			catch(IOException s) {
+				s.printStackTrace();
+			}
+			try (FileOutputStream s = new FileOutputStream(new File(Second_File)) ;
+					
+					ObjectOutputStream o = new ObjectOutputStream(s)) {
+				o.writeObject(csp);
+				}
+				catch(IOException s) {
+					s.printStackTrace();
+				}
+		}
+	}
+	private static GridPanel load() {
+		try(FileInputStream fis = new FileInputStream(new File(DATA_FILE));
+				ObjectInputStream ois = new ObjectInputStream(fis)) {
+					return (GridPanel) ois.readObject();
+				}
+		catch(IOException es) {
+			es.printStackTrace();
+			return null;
+		}
+		catch(ClassNotFoundException c) {
+			c.printStackTrace();
+			return null;
+		}}
+		try(FileInputStream s = new FileInputStream(new File(Second_File));
+				ObjectInputStream of = new ObjectInputStream(s)) {
+					return (ColorSelectionPanel) of.readObject();
+				}
+		catch(IOException es) {
+			es.printStackTrace();
+			return null;
+		}
+		catch(ClassNotFoundException c) {
+			c.printStackTrace();
+			return null;
 		}
 	}
 }
