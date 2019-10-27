@@ -134,18 +134,8 @@ public class PixelArtMaker implements MouseListener, ActionListener{
 		catch(ClassNotFoundException c) {
 			c.printStackTrace();
 			return null;
-		}}
-		try(FileInputStream s = new FileInputStream(new File(Second_File));
-				ObjectInputStream of = new ObjectInputStream(s)) {
-					return (ColorSelectionPanel) of.readObject();
-				}
-		catch(IOException es) {
-			es.printStackTrace();
-			return null;
-		}
-		catch(ClassNotFoundException c) {
-			c.printStackTrace();
-			return null;
 		}
 	}
+
+	
 }
